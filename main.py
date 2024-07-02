@@ -5,6 +5,7 @@ from tkinter.scrolledtext import ScrolledText
 from tkinter import filedialog
 import time
 import copy
+import requests
 
 # TODO
 '''
@@ -593,5 +594,9 @@ class Frontend:
 
 
 if __name__ == "__main__":
+    print("Installed Version: v1.2.2")
+    url = "https://api.github.com/repos/Westpol/GeS-Ipad-Verwaltung/releases/latest"
+    response = requests.get(url)
+    print("Latest Version: {0}".format(response.json()["name"]))
     frontend = Frontend()
     frontend.begin()
