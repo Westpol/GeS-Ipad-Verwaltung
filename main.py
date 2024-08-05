@@ -42,9 +42,10 @@ class Backend:
             Exception(AttributeError)
 
         self.dictPath = self.config_dict["activeFilepath"]
-        with open(self.dictPath, "r") as jsonfile:      # loading json file and storing it globally, to save in the end
-            self.device_dict = json.load(jsonfile)
-        # self.device_dict["opendate"] = int(time.time())
+        if self.dictPath != "":
+            with open(self.dictPath, "r") as jsonfile:      # loading json file and storing it globally, to save in the end
+                self.device_dict = json.load(jsonfile)
+            # self.device_dict["opendate"] = int(time.time())
 
     def save(self):
         with open(self.dictPath, "w") as file:
