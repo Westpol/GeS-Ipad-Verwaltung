@@ -148,6 +148,7 @@ class Frontend:
         curr_dir = os.path.dirname(os.path.realpath(__file__)).split("/")[1:]
         filename = tk.filedialog.askopenfilename(initialdir="/{0}/{1}/".format(curr_dir[0], curr_dir[1]), title="Select a File", filetypes=(("JSON files", "*.json*"), ("all files", "*.*")))
         print(filename)
+        self.root.destroy()
 
     def changeFile(self):
         pass
