@@ -1,3 +1,5 @@
+version = "v1.2.2"
+
 import os
 import json
 import tkinter as tk
@@ -13,9 +15,20 @@ Backend is ONLY used as the json Interface
 in the beninging, the data is stored in a dict variable, and saved when saved button is pressed 
 
 - refine manualSearch (autocomplete via Tab)
-- uncomment backend __init__ line
 - manual searching leads to the same it num shown in every following scan (check fix in School)
 '''
+
+
+class colors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 
 class Backend:
@@ -45,7 +58,7 @@ class Backend:
         if self.dictPath != "":
             with open(self.dictPath, "r") as jsonfile:      # loading json file and storing it globally, to save in the end
                 self.device_dict = json.load(jsonfile)
-            # self.device_dict["opendate"] = int(time.time())
+            self.device_dict["opendate"] = int(time.time())
 
     def save(self):
         with open(self.dictPath, "w") as file:
@@ -595,9 +608,16 @@ class Frontend:
 
 
 if __name__ == "__main__":
-    print("Installed Version: v1.2.2")
+    print("Installed Version: {0}".format(version))
     url = "https://api.github.com/repos/Westpol/GeS-Ipad-Verwaltung/releases/latest"
-    response = requests.get(url)
-    print("Latest Version: {0}".format(response.json()["name"]))
+    try:
+        response = requests.get(url)
+        print("Latest Version: {0}".format(response.json()["name"]))
+        if response.json()["name"] == version:
+            print(colors.OKGREEN + "latest Version installed!" + colors.ENDC)
+        else:
+            print(colors.WARNING + "Version outdated!" + colors.ENDC)
+    except:
+        print(colors.WARNING + "Can't check Version might be because of bad Internet connection." + colors.ENDC)
     frontend = Frontend()
     frontend.begin()
