@@ -17,6 +17,9 @@ in the beninging, the data is stored in a dict variable, and saved when saved bu
 
 - refine manualSearch (autocomplete via Tab)
 - manual searching leads to the same it num shown in every following scan (check fix in School)
+- add restart app when new database is opened
+- restructure code so that welcome window is not dependend on database being open
+- when dictPath string is empty, load an empty window and the file select window, when File is selected, reload everything
 '''
 
 
@@ -79,6 +82,9 @@ class Backend:
 class Frontend:
     def __init__(self):
         self.backend = Backend()
+
+        if self.backend.dictPath == "" or os.path.exists(self.backend.dictPath):
+            pass
 
         self.keyData = []
         self.accept_scan = False
@@ -609,17 +615,18 @@ class Frontend:
 
 
 if __name__ == "__main__":
-    print("Installed Version: {0}".format(version))
-    url = "https://api.github.com/repos/Westpol/GeS-Ipad-Verwaltung/releases/latest"
-    try:
-        response = requests.get(url)
-        latestVersion = response.json()["name"]
-        print("Latest Version: {0}".format(latestVersion))
-        if latestVersion == version:
-            print(colors.OKGREEN + "latest Version installed!" + colors.ENDC)
-        else:
-            print(colors.WARNING + "Version outdated!" + colors.ENDC)
-    except:
-        print(colors.WARNING + "Can't check Version might be because of bad Internet connection." + colors.ENDC)
-    frontend = Frontend()
-    frontend.begin()
+    while 1:
+        print("Installed Version: {0}".format(version))
+        url = "https://api.github.com/repos/Westpol/GeS-Ipad-Verwaltung/releases/latest"
+        try:
+            response = requests.get(url)
+            latestVersion = response.json()["name"]
+            print("Latest Version: {0}".format(latestVersion))
+            if latestVersion == version:
+                print(colors.OKGREEN + "latest Version installed!" + colors.ENDC)
+            else:
+                print(colors.WARNING + "Version outdated!" + colors.ENDC)
+        except:
+            print(colors.WARNING + "Can't check Version might be because of bad Internet connection." + colors.ENDC)
+        frontend = Frontend()
+        frontend.begin()
