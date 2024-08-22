@@ -1,4 +1,5 @@
 version = "v1.2.2"
+latestVersion = ""
 
 import os
 import json
@@ -612,8 +613,9 @@ if __name__ == "__main__":
     url = "https://api.github.com/repos/Westpol/GeS-Ipad-Verwaltung/releases/latest"
     try:
         response = requests.get(url)
-        print("Latest Version: {0}".format(response.json()["name"]))
-        if response.json()["name"] == version:
+        latestVersion = response.json()["name"]
+        print("Latest Version: {0}".format(latestVersion))
+        if latestVersion == version:
             print(colors.OKGREEN + "latest Version installed!" + colors.ENDC)
         else:
             print(colors.WARNING + "Version outdated!" + colors.ENDC)
