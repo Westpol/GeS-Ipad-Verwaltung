@@ -1,6 +1,3 @@
-version = "v1.2.2"
-latestVersion = ""
-
 import os
 import json
 import tkinter as tk
@@ -9,6 +6,10 @@ from tkinter import filedialog
 import time
 import copy
 import requests
+
+version = "v1.2.2"
+latestVersion = ""
+
 
 # TODO
 '''
