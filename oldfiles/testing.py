@@ -10,4 +10,4 @@ response = requests.get(url)
 
 print(response.json()["name"])
 
-os.execv(sys.argv[0], sys.argv)
+print(os.path.exists(""))
