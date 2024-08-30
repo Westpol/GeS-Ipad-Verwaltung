@@ -47,14 +47,14 @@ class Backend:
 
         dir_list = os.path.dirname(os.path.realpath(__file__)).split("/")[1:]
         dir_config = "/" + dir_list[0] + "/" + dir_list[1] + "/" + ".config" + "/ipadverwaltung"
-        file_config = dir_config + "/config.json"
+        self.file_config = dir_config + "/config.json"
         if not os.path.exists(dir_config):
             os.mkdir(dir_config)
-        if not os.path.exists(file_config):
-            with open(file_config, "w") as configfile:
+        if not os.path.exists(self.file_config):
+            with open(self.file_config, "w") as configfile:
                 configfile.write(json.dumps(default_dict, indent=4))
-        if os.path.exists(file_config):
-            with open(file_config, "r") as configfile:
+        if os.path.exists(self.file_config):
+            with open(self.file_config, "r") as configfile:
                 self.config_dict = json.load(configfile)
         else:
             Exception(AttributeError)
@@ -64,6 +64,11 @@ class Backend:
             with open(self.dictPath, "r") as jsonfile:      # loading json file and storing it globally, to save in the end
                 self.device_dict = json.load(jsonfile)
             self.device_dict["opendate"] = int(time.time())
+
+    def setDictPath(self, fp: str):
+        with open(self.file_config, "w") as configfile:
+            self.config_dict["activeFilepath"] = fp
+            configfile.write(json.dumps(self.config_dict, indent=4))
 
     def save(self):
         with open(self.dictPath, "w") as file:
@@ -82,15 +87,8 @@ class Backend:
 
 class Frontend:
     def __init__(self):
+        self.hasDatabase = False
         self.backend = Backend()
-
-        if self.backend.dictPath == "" or os.path.exists(self.backend.dictPath):
-            pass
-
-        self.keyData = []
-        self.accept_scan = False
-        self.itnum = ""
-        self.itnumDict = {}
 
         self.root = tk.Tk()
         self.root.geometry("{}x{}".format(960, 540))
@@ -100,14 +98,24 @@ class Frontend:
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
 
         self.clear(self.root, True)
-        self.welcomeScreen()
 
-        self.itList = []
-        for i in self.backend.device_dict["Ipads"]:
-            self.itList.append((i, self.backend.device_dict["Ipads"][i]["userInfo"]["surname"],
-                                self.backend.device_dict["Ipads"][i]["userInfo"]["name"],
-                                self.backend.device_dict["Ipads"][i]["deviceInfo"]["SNr"]))
-        self.repairList = []
+        if os.path.exists(self.backend.dictPath):
+            self.hasDatabase = True
+            self.keyData = []
+            self.accept_scan = False
+            self.itnum = ""
+            self.itnumDict = {}
+
+            self.welcomeScreen()
+
+            self.itList = []
+            for i in self.backend.device_dict["Ipads"]:
+                self.itList.append((i, self.backend.device_dict["Ipads"][i]["userInfo"]["surname"],
+                                    self.backend.device_dict["Ipads"][i]["userInfo"]["name"],
+                                    self.backend.device_dict["Ipads"][i]["deviceInfo"]["SNr"]))
+            self.repairList = []
+        else:
+            self.chooseFile()
 
     def exit(self):
 
@@ -148,11 +156,11 @@ class Frontend:
     def chooseFile(self):
         curr_dir = os.path.dirname(os.path.realpath(__file__)).split("/")[1:]
         filename = tk.filedialog.askopenfilename(initialdir="/{0}/{1}/".format(curr_dir[0], curr_dir[1]), title="Select a File", filetypes=(("JSON files", "*.json*"), ("all files", "*.*")))
-        print(filename)
+        self.changeFile(filename)
         self.root.destroy()
 
-    def changeFile(self):
-        pass
+    def changeFile(self, fn: str):
+        self.backend.setDictPath(fn)
 
 
     def dropdownMenu(self):
