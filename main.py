@@ -162,7 +162,6 @@ class Frontend:
     def changeFile(self, fn: str):
         self.backend.setDictPath(fn)
 
-
     def dropdownMenu(self):
         menu = tk.Menu(self.root)
         self.root.config(menu=menu)
