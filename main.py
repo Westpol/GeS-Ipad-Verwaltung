@@ -18,9 +18,6 @@ in the beninging, the data is stored in a dict variable, and saved when saved bu
 
 - refine manualSearch (autocomplete via Tab)
 - manual searching leads to the same it num shown in every following scan (check fix in School)
-- add restart app when new database is opened
-- restructure code so that welcome window is not dependend on database being open
-- when dictPath string is empty, load an empty window and the file select window, when File is selected, reload everything
 '''
 
 
@@ -66,9 +63,10 @@ class Backend:
             self.device_dict["opendate"] = int(time.time())
 
     def setDictPath(self, fp: str):
-        with open(self.file_config, "w") as configfile:
-            self.config_dict["activeFilepath"] = fp
-            configfile.write(json.dumps(self.config_dict, indent=4))
+        if "/" in fp:
+            with open(self.file_config, "w") as configfile:
+                self.config_dict["activeFilepath"] = fp
+                configfile.write(json.dumps(self.config_dict, indent=4))
 
     def save(self):
         with open(self.dictPath, "w") as file:
