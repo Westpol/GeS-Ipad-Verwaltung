@@ -244,6 +244,10 @@ class Frontend:
                 searchResult += "{0}, {1} {2}, {3}\n".format(i[0], i[1], i[2], i[3])
             listVar.set(searchResult)
 
+        def exit_this():
+            self.clear(self.root, True)
+            self.welcomeScreen()
+
         self.root.bind('<Return>', lambda *args: searchPressed(*args))
         self.root.bind('<KeyPress>', lambda *args: narrowList(*args))
 
@@ -257,11 +261,13 @@ class Frontend:
         searchButton = tk.Button(searchFrame, text="Search", command=lambda: searchPressed())
         errorMessage = tk.Label(searchFrame, textvariable=warningVariable)
         inListText = tk.Label(searchFrame, textvariable=listVar)
+        exit_button = tk.Button(searchFrame, text="Exit", command=lambda: exit_this())
 
         entryBox.grid(column=0, row=0)
         searchButton.grid(column=1, row=0)
         errorMessage.grid(column=0, row=1)
         inListText.grid(column=0, row=2)
+        exit_button.grid(column=2, row=0)
         searchFrame.pack()
 
         narrowList(None)
@@ -324,6 +330,10 @@ class Frontend:
                 searchResult += "{0}, {1} {2}, {3}\n".format(i[0], i[1], i[2], i[3])
             listVar.set(searchResult)
 
+        def exit_this():
+            self.clear(self.root, True)
+            self.welcomeScreen()
+
         self.root.bind('<Return>', lambda *args: searchPressed(*args))
         self.root.bind('<KeyPress>', lambda *args: narrowList(*args))
 
@@ -337,11 +347,13 @@ class Frontend:
         searchButton = tk.Button(searchFrame, text="Search", command=lambda: searchPressed())
         errorMessage = tk.Label(searchFrame, textvariable=warningVariable)
         inListText = tk.Label(searchFrame, textvariable=listVar)
+        exit_button = tk.Button(searchFrame, text="Exit", command=lambda: exit_this())
 
         entryBox.grid(column=0, row=0)
         searchButton.grid(column=1, row=0)
         errorMessage.grid(column=0, row=1)
         inListText.grid(column=0, row=2)
+        exit_button.grid(column=2, row=0)
         searchFrame.pack()
 
         narrowList(None)
