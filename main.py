@@ -89,6 +89,7 @@ class Frontend:
         self.backend = Backend()
 
         self.root = tk.Tk()
+        self.root.title("GeS Ipad Verwaltung v1.2.2")
         self.root.geometry("{}x{}".format(960, 540))
         self.root.minsize(960, 540)
         self.root.maxsize(960, 540)
